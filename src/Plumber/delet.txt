@@ -1,0 +1,103 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Usernavbar } from './Usernavbar';
+
+export const WorkGallery = () => {
+  const [items, setItems] = useState([]);
+  const [loadingDelete, setLoadingDelete] = useState(null); // store id of deleting item
+
+  const getwork = async () => {
+    try {
+      const res = await axios.get('/getitems');
+      const rawItems = Array.isArray(res.data) ? res.data : res.data.data || [];
+      const cleanItems = rawItems.map(item => ({
+        ...item,
+        imageURL: Array.isArray(item.imageURL)
+          ? item.imageURL
+          : item.imageURL
+          ? [item.imageURL]
+          : [],
+      }));
+      setItems(cleanItems);
+    } catch (err) {
+      console.error('Error fetching items:', err);
+      setItems([]);
+    }
+  };
+
+  useEffect(() => {
+    getwork();
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this work?')) return;
+
+    try {
+      setLoadingDelete(id);
+      await axios.delete(`/work/${id}`); // Adjust URL to your backend route
+      // Refresh list
+      await getwork();
+    } catch (error) {
+      console.error('Error deleting work:', error);
+      alert('Failed to delete work');
+    } finally {
+      setLoadingDelete(null);
+    }
+  };
+
+  return (
+    <div className="container mt-6">
+      <div className="row">
+        {!items.length ? (
+          <div className="col-12 text-center">
+            <div className="spinner-border text-primary" role="status"></div>
+          </div>
+        ) : (
+          items.map((item, index) => (
+            <div key={item._id || index} className="col-md-4 mb-4">
+              <div className="card border rounded shadow-lg">
+                {item.imageURL.length > 0 ? (
+                  <Carousel
+                    showThumbs={false}
+                    showStatus={false}
+                    infiniteLoop
+                    autoPlay
+                    emulateTouch
+                  >
+                    {item.imageURL.map((url, i) => (
+                      <div key={i}>
+                        <img
+                          src={url}
+                          alt={`slide-${i}`}
+                          style={{ height: '250px', objectFit: 'cover', width: '100%' }}
+                          onError={(e) => (e.target.style.display = 'none')}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                ) : (
+                  <div className="text-center py-3">No images available</div>
+                )}
+                <div className="card-body text-center">
+                  <p className="mb-1">
+                    <strong>Work:</strong> {item.work || 'Not specified'}
+                  </p>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    disabled={loadingDelete === item._id}
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    {loadingDelete === item._id ? 'Deleting...' : 'Delete'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      <Usernavbar />
+    </div>
+  );
+};
