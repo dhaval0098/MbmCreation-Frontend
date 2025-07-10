@@ -19,7 +19,7 @@ import { WorkDetails } from './User/WorkDetails'
 function App() {
   
   
-    axios.defaults.baseURL = "http://localhost:6009"
+    axios.defaults.baseURL = "https://mbmcreation-backend.onrender.com"
       
     const location = useLocation();
 
