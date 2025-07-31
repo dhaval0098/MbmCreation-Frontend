@@ -23,6 +23,9 @@ export const Addwork = () => {
       const res = await axios.post('/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+       toast.success("item added sucessfully", {
+                position: "top-center",
+              });
   
       console.log('Response:', res.data);
   

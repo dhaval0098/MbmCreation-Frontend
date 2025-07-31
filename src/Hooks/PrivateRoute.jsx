@@ -6,8 +6,8 @@ const useAuth = ()=>{
     const [isloading, setisloading] = useState(true)
 
     useEffect(()=>{
-        const useremail = localStorage.getItem("userEmail")
-        const password = localStorage.getItem("userPassword")
+        const useremail = localStorage.getItem("AdminEmail")
+        const id = localStorage.getItem("AdminID")
 
         if(useremail){
             setauthstate({isloggedin:true,useremail})

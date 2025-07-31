@@ -10,6 +10,8 @@ import Login from './Plumber/Login'
 import PrivateRoutes from './Hooks/PrivateRoute'
 import { WorkGallery } from './User/WorkGallery'
 import { WorkDetails } from './User/WorkDetails'
+import { Signup } from './Plumber/Signup'
+import { ReverseString } from './User/ReverseString'
 // import Navbar from './User/Navbar'
 // import Usernavbar from './User/Usernavbar'
 // import reactLogo from './assets/react.svg'
@@ -27,6 +29,8 @@ function App() {
     <>
     <Routes>
      <Route path='/'element={<Landing/>}></Route>
+     <Route path='/revese'element={<ReverseString/>}></Route>
+     <Route path='/signup'element={<Signup/>}></Route>
       <Route path='/navbar'element={<Usernavbar/>}></Route>
       <Route path='/contactus'element={<ContactUs/>}></Route>
       <Route path='/workgallery'element={<WorkGallery/>}></Route>

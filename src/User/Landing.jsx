@@ -8,7 +8,9 @@ export default function Landing() {
   const {register,handleSubmit}=useForm()
   const submithandler = async(data)=>{
     const responce = await axios.post("/addquery",data)
-    alert("message sent sucessfully")
+     toast.success("will reach you soon", {
+              position: "top-center",
+            });
     console.log(responce);
     
     res.json({
@@ -85,6 +87,7 @@ export default function Landing() {
       />
 
       <header className="bg-primary text-white text-center py-5 mt-2">
+        <h1 className="display-4">MbmCreation</h1>
         <h1 className="display-4">Reliable And Fast Services</h1>
         <p className="lead">Fast, Professional & Affordable Solutions</p>
        
